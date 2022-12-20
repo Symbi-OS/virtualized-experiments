@@ -8,9 +8,8 @@ build_lupine() {
 
     if [ ! -d "${LUPINEDIR}/Lupine-Linux" ]; then
 	    pushd ${LUPINEDIR}
-	    git clone https://github.com/hlef/Lupine-Linux.git
+	    git clone https://github.com/Symbi-OS/Lupine-Linux.git
 	    pushd Lupine-Linux
-	    git checkout b9dc99bbd09180b0a3548583d58f9c003d4576e8
 	    git submodule update --init
 	    make build-env-image
 	    pushd load_entropy

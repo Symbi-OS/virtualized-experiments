@@ -17,7 +17,7 @@ CP ?= cp
 #
 
 .PHONY: all
-all: wrk solo5-hvt-noop-timer
+all: wrk
 
 .PHONY: wrk
 
@@ -31,28 +31,3 @@ $(BUILDDIR)/wrk:
 	$(GIT) clone https://github.com/wg/wrk.git $(BUILDDIR)/$@
 	(cd $(BUILDDIR)/$@; $(GIT) checkout $(WRK_VERSION))
 
-.PHONY: solo5-hvt-noop-timer
-
-SOLO5_VERSION ?= 0eb8cb8f57943e7872a94e19695911a1e0b8aef6
-
-solo5-hvt-noop-timer: $(BUILDDIR)/solo5-hvt-noop-timer
-	(cd $(BUILDDIR)/$@; $(GIT) checkout $(SOLO5_VERSION))
-	(cd $(BUILDDIR)/$@; $(GIT) am < $(PATCHDIR)/$@.patch)
-	(cd $(BUILDDIR)/$@; ./configure.sh)
-	$(MAKE) -C $(BUILDDIR)/$@
-	$(CP) $(BUILDDIR)/$@/tenders/hvt/solo5-hvt $(TOOLSDIR)/$@
-
-$(BUILDDIR)/solo5-hvt-noop-timer:
-	$(GIT) clone https://github.com/solo5/solo5.git $@
-
-
-.PHONY: solo5-hvt
-
-solo5-hvt: $(BUILDDIR)/solo5-hvt
-	(cd $(BUILDDIR)/$@; $(GIT) checkout $(SOLO5_VERSION))
-	(cd $(BUILDDIR)/$@; ./configure.sh)
-	$(MAKE) -C $(BUILDDIR)/$@
-	$(CP) $(BUILDDIR)/$@/tenders/hvt/solo5-hvt $(TOOLSDIR)/$@
-
-$(BUILDDIR)/solo5-hvt:
-	$(GIT) clone https://github.com/solo5/solo5.git $@
