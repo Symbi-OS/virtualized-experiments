@@ -3,16 +3,15 @@
 # makes sure to run host setup
 ../common/setup-host.sh
 
+rm -rf rawdata results
 mkdir rawdata results
 
 # run benchmarks
-./impl/hermitux-uhyve-redis.sh
-./impl/rump-qemu-redis.sh
-./impl/osv-qemu-redis.sh
-./impl/lupine-fc-redis.sh
+./impl/privbox-redis.sh
 ./impl/lupine-qemu-redis.sh
-./impl/microvm-fc-redis.sh
-./impl/microvm-qemu-redis.sh
-./impl/docker-redis.sh
-./impl/native-redis.sh
+./impl/linux-redis.sh
+./impl/symbiote-pt-redis.sh
+./impl/symbiote-int-redis.sh
+./impl/symbiote-el-redis.sh
+./impl/symbiote-sc-rw-redis.sh
 ./impl/unikraft-qemu-redis.sh

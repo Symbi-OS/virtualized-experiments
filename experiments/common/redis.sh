@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -z "${REPS}" ]] && REPS=100000
+[[ -z "${REPS}" ]] && REPS=10000000
 #[[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=10
 [[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=30
 #[[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=2
@@ -11,7 +11,7 @@
 [[ -z "${QUERIES}" ]] && QUERIES=get,set
 
 function benchmark_redis_server {
-	taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \
+	timeout -k 45 40 taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \
 			-n ${REPS} -c ${CONCURRENT_CONNS} \
 			-h ${1} -p $2 -d ${PAYLOAD_SIZE} \
 			-k ${KEEPALIVE} -t ${QUERIES} \

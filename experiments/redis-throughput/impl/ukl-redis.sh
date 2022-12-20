@@ -15,9 +15,11 @@ mkdir -p rawdata results
 create_bridge $NETIF $BASEIP
 
 kill_qemu
+dnsmasq_pid=$(run_dhcp $NETIF $BASEIP)
 
 function cleanup {
 	# kill all children (evil)
+	kill_dhcp $dnsmasq_pid
 	kill_qemu
 	pkill -P $$
 	delete_bridge $NETIF
@@ -25,33 +27,33 @@ function cleanup {
 
 trap "cleanup" EXIT
 
-RESULTS=results/unikraft-qemu.csv
+RESULTS=results/ukl-qemu.csv
 echo "operation	throughput" > $RESULTS
 
-for ((j = 1 ; j < 21 ; j++))
+for j in {1..20}
 do
-	LOG=rawdata/unikraft-qemu-redis-$j.txt
+	LOG=rawdata/ukl-qemu-redis-$j.txt
 	touch $LOG
 	taskset -c ${CPU1} qemu-guest \
-		-i data/redis.cpio \
-		-k ${IMAGES}/unikraft+mimalloc.kernel \
-		-a "netdev.ipv4_addr=${BASEIP}.2 netdev.ipv4_gw_addr=${BASEIP}.1 netdev.ipv4_subnet_mask=255.255.255.0 -- /redis.conf" -m 1024 -p ${CPU2} \
+		-i ${IMAGES}/redis-ukl-initrd.cpio.gz \
+		-k ${IMAGES}/vmlinuz.ukl-redis-sc \
+		-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nosmap nosmep mds=off ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never mitigations=off" \
+		-m 1024 -p ${CPU2} \
 		-b ${NETIF} -x
 
 	# make sure that the server has properly started
-	sleep 8
+	sleep 20
 
 	# benchmark
 	benchmark_redis_server ${BASEIP}.2 6379
 
-	lines=`wc -l $LOG | cut --delimiter " " --fields 1`
+        lines=`wc -l $LOG | cut --delimiter " " --fields 1`
         if [[ $lines -ne 3 ]] ; then
                 rm $LOG
                 ((j--))
         else
                 parse_redis_results $LOG $RESULTS
         fi
-
 	# stop server
 	kill_qemu
 done

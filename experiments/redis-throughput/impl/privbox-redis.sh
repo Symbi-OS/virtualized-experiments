@@ -12,8 +12,6 @@ IMAGES=$(pwd)/images/
 NETIF=unikraft0
 mkdir -p rawdata results
 
-create_bridge $NETIF $BASEIP
-
 kill_qemu
 
 function cleanup {
@@ -21,32 +19,37 @@ function cleanup {
 	kill_qemu
 	pkill -P $$
 	delete_bridge $NETIF
+	rm -f images/disk0.qcow2
 }
 
 trap "cleanup" EXIT
 
-RESULTS=results/unikraft-qemu.csv
+create_bridge $NETIF $BASEIP
+RESULTS=results/privbox-qemu.csv
 echo "operation	throughput" > $RESULTS
 
-for ((j = 1 ; j < 21 ; j++))
-do
-	LOG=rawdata/unikraft-qemu-redis-$j.txt
+
+for ((j = 1 ; j < 21 ; j++)); do
+	LOG=rawdata/privbox-qemu-redis-$j.txt
 	touch $LOG
+	qemu-img create -F qcow2 -f qcow2 -b ${IMAGES}/privbox-disk.qcow2 ${IMAGES}/disk0.qcow2
 	taskset -c ${CPU1} qemu-guest \
-		-i data/redis.cpio \
-		-k ${IMAGES}/unikraft+mimalloc.kernel \
-		-a "netdev.ipv4_addr=${BASEIP}.2 netdev.ipv4_gw_addr=${BASEIP}.1 netdev.ipv4_subnet_mask=255.255.255.0 -- /redis.conf" -m 1024 -p ${CPU2} \
+		-i ${IMAGES}/privbox-initrd.cpio.gz \
+		-k ${IMAGES}/vmlinuz.privbox \
+		-q ${IMAGES}/disk0.qcow2 \
+		-e ${IMAGES}/privbox/devenv \
+		-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog mitigations=off nosmap nosmep mds=off ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr root=/dev/vda selinux=0 transparent_hugepage=never" \
+		-m 1024 -p ${CPU2} \
 		-b ${NETIF} -x
 
 	# make sure that the server has properly started
-	sleep 8
+	sleep 20
 
 	# benchmark
 	benchmark_redis_server ${BASEIP}.2 6379
 
 	lines=`wc -l $LOG | cut --delimiter " " --fields 1`
         if [[ $lines -ne 3 ]] ; then
-                rm $LOG
                 ((j--))
         else
                 parse_redis_results $LOG $RESULTS
@@ -54,4 +57,5 @@ do
 
 	# stop server
 	kill_qemu
+	rm -f ${IMAGES}/disk0.qcow2
 done
