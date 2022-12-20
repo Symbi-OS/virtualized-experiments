@@ -1,13 +1,13 @@
 #!/bin/bash
 
-[[ -z "${REPS}" ]] && REPS=10000000
+[[ -z "${REPS}" ]] && REPS=500000
 #[[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=10
-[[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=30
+[[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=50
 #[[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=2
 [[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=3
 [[ -z "${KEEPALIVE}" ]] && KEEPALIVE=1
-#[[ -z "${PIPELINING}" ]] && PIPELINING=1
-[[ -z "${PIPELINING}" ]] && PIPELINING=16
+[[ -z "${PIPELINING}" ]] && PIPELINING=1
+#[[ -z "${PIPELINING}" ]] && PIPELINING=16
 [[ -z "${QUERIES}" ]] && QUERIES=get,set
 
 function benchmark_redis_server {
