@@ -26,7 +26,7 @@ function work {
 			-k ${IMAGES}/vmlinuz.sym-ret \
 			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog mitigations=off nosmap nosmep mds=off ip=172.190.0.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init -- $SYM_ARGS" \
 			-m 1024 -p ${CPU2} \
-			-b ${NETIF} 
+			-b ${NETIF} -x
 
 		# make sure that the server has properly started
 		sleep 10
