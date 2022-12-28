@@ -26,7 +26,7 @@ run:
 
 .PHONY: plot
 plot:
-	$(SNAKE) $(WORKDIR)/plot.py --data $(RESULTS) --output $(PLOT)
+	$(SNAKE) $(WORKDIR)/plot.py
 
 .PHONY: clean
 clean:
