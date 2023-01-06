@@ -11,7 +11,7 @@
 [[ -z "${QUERIES}" ]] && QUERIES=get,set
 
 function benchmark_redis_server {
-	timeout -k 45 40 taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \
+	timeout -k 65 60 taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \
 			-n ${REPS} -c ${CONCURRENT_CONNS} \
 			-h ${1} -p $2 -d ${PAYLOAD_SIZE} \
 			-k ${KEEPALIVE} -t ${QUERIES} \

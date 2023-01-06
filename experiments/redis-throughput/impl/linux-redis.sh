@@ -27,36 +27,44 @@ function cleanup {
 
 trap "cleanup" EXIT
 
-for ver in 4.0 5.8 5.14 ; do 
-	RESULTS=results/linux-${ver}-qemu.csv
-	echo "operation	throughput" > $RESULTS
-	touch $LOG
+for mits in "mitigations=off mds=off" "" ; do
+        if [ -z $mits ]; then
+                mit="none"
+        else
+                mit="all"
+        fi
 
-	for ((j = 1 ; j < 21 ; j++))
-	do
-		LOG=rawdata/linux-${ver}-qemu-redis-$j.txt
-		taskset -c ${CPU1} qemu-guest \
-			-i ${IMAGES}/base-redis.cpio.gz \
-			-k ${IMAGES}/vmlinuz.${ver}-baseline \
-			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog mitigations=off nosmap nosmep mds=off ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init" \
-			-m 1024 -p ${CPU2} \
-			-b ${NETIF} -x
+	for ver in 4.0 5.8 5.14 ; do 
+		RESULTS=results/linux-${ver}-qemu-${mit}.csv
+		echo "operation	throughput" > $RESULTS
+		touch $LOG
 
-		# make sure that the server has properly started
-		sleep 10
+		for ((j = 1 ; j < 21 ; j++))
+		do
+			LOG=rawdata/linux-${ver}-qemu-redis-${mit}-${j}.txt
+			taskset -c ${CPU1} qemu-guest \
+				-i ${IMAGES}/base-redis.cpio.gz \
+				-k ${IMAGES}/vmlinuz.${ver}-baseline \
+				-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init" \
+				-m 1024 -p ${CPU2} \
+				-b ${NETIF} -x
 
-		# benchmark
-		benchmark_redis_server ${BASEIP}.2 6379
+			# make sure that the server has properly started
+			sleep 10
 
-		lines=`wc -l $LOG | cut --delimiter " " --fields 1`
-		if [[ $lines -ne 3 ]] ; then
-			rm $LOG
-			((j--))
-		else
-			parse_redis_results $LOG $RESULTS
-		fi
+			# benchmark
+			benchmark_redis_server ${BASEIP}.2 6379
 
-		# stop server
-		kill_qemu
+			lines=`wc -l $LOG | cut --delimiter " " --fields 1`
+			if [[ $lines -ne 3 ]] ; then
+				rm $LOG
+				((j--))
+			else
+				parse_redis_results $LOG $RESULTS
+			fi
+
+			# stop server
+			kill_qemu
+		done
 	done
 done
