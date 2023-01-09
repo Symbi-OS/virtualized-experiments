@@ -10,7 +10,7 @@ source ./impl/symbiote-base-redis.sh
 kill_qemu
 
 create_bridge $NETIF $BASEIP
-LOG_T='rawdata/symbiote-sc-rw-qemu-redis-$j.txt'
+LOG_T='rawdata/symbiote-sc-rw-qemu-redis-$mit-$j.txt'
 
 for mits in "mitigations=off mds=off" "" ; do
         if [ -z $mits ]; then
