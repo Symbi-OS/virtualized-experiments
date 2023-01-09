@@ -29,9 +29,9 @@ trap "cleanup" EXIT
 
 for mits in "mitigations=off mds=off" "" ; do
         if [ -z $mits ]; then
-                mit="none"
-        else
                 mit="all"
+        else
+                mit="none"
         fi
 
 	for ver in 4.0 5.8 5.14 ; do 

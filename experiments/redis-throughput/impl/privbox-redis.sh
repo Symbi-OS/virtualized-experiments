@@ -28,9 +28,9 @@ create_bridge $NETIF $BASEIP
 
 for mits in "mitigations=off mds=off" "" ; do
 	if [ -z $mits ]; then
-		mit="none"
-	else
 		mit="all"
+	else
+		mit="none"
 	fi
 	RESULTS=results/privbox-qemu-${mit}.csv
 	echo "operation	throughput" > $RESULTS

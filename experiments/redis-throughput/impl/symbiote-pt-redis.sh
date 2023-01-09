@@ -14,9 +14,9 @@ LOG_T='rawdata/symbiote-pt-qemu-redis-$mit-$j.txt'
 
 for mits in "mitigations=off mds=off" "" ; do
         if [ -z $mits ]; then
-                mit="none"
-        else
                 mit="all"
+        else
+                mit="none"
         fi
 
 	RESULTS=results/symbiote-pt-qemu-${mit}.csv

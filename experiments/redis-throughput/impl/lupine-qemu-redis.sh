@@ -31,9 +31,9 @@ function cleanup {
 trap "cleanup" EXIT
 for mits in "mitigations=off mds=off" "" ; do
         if [ -z $mits ]; then
-                mit="none"
-        else
                 mit="all"
+        else
+                mit="none"
         fi
 
 	RESULTS=results/lupine-qemu-${mit}.csv
