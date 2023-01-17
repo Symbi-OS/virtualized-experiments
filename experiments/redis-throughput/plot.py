@@ -180,3 +180,4 @@ def create_table():
 
 
 create_table()
+plot_figure()
