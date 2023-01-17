@@ -16,15 +16,24 @@ labels = {
     'unikraft-qemu': 'Unikraft',
     'ukl-qemu': 'UKL SC',
     'ukl-byp-qemu': 'UKL BYP',
-    'symbiote-pt-qemu': 'Symbiote PT',
-    'symbiote-int-qemu': 'Symbiote INT',
-    'symbiote-el-qemu': 'Symbiote EL',
-    'symbiote-sc-rw-qemu': 'Symbiote SC RW',
-    'linux-5.14-qemu': 'Linux 5.14',
-    'linux-5.8-qemu': 'Linux 5.8',
-    'linux-4.0-qemu': 'Linux 4.0',
-    'privbox-qemu': 'PrivBox',
-    'lupine-qemu': 'Lupine'
+    'symbiote-pt-qemu-all': 'Symbiote PT',
+    'symbiote-int-qemu-all': 'Symbiote INT',
+    'symbiote-el-qemu-all': 'Symbiote EL',
+    'symbiote-sc-rw-qemu-all': 'Symbiote SC RW',
+    'linux-5.14-qemu-all': 'Linux 5.14',
+    'linux-5.8-qemu-all': 'Linux 5.8',
+    'linux-4.0-qemu-all': 'Linux 4.0',
+    'privbox-qemu-all': 'PrivBox',
+    'lupine-qemu-all': 'Lupine',
+    'symbiote-pt-qemu-none': 'Symbiote PT No Mitigations',
+    'symbiote-int-qemu-none': 'Symbiote INT No Mitigations',
+    'symbiote-el-qemu-none': 'Symbiote EL No Mitigations',
+    'symbiote-sc-rw-qemu-none': 'Symbiote SC RW No Mitigations',
+    'linux-5.14-qemu-none': 'Linux 5.14 No Mitigations',
+    'linux-5.8-qemu-none': 'Linux 5.8 No Mitigations',
+    'linux-4.0-qemu-none': 'Linux 4.0 No Mitigations',
+    'privbox-qemu-none': 'PrivBox No Mitigations',
+    'lupine-qemu-none': 'Lupine No Mitigations'
 }
 
 def load_data():
@@ -148,8 +157,6 @@ def create_table():
     stats = load_data()
 
     with open('redis-virt.tex', 'w') as outfile:
-        outfile.write('\\begin{table*}[ht]\n')
-        outfile.write('\t\\centering\n')
         outfile.write('\t\\begin{tabular}{|c|c|c|c|c|}\n')
         outfile.write('\t\t\\hline\n')
         outfile.write('\t\t\\multirow{2}{*}{System} & \\multicolumn{2}{|c|}{No Mitigations} & \\multicolumn{2}{|c|}{With Mitigations} \\\\\n')
@@ -170,9 +177,6 @@ def create_table():
             outfile.write('\t\t\\hline\n')
 
         outfile.write('\t\\end{tabular}\n')
-        outfile.write('\t\\label{GIVE ME A LABEL}\n')
-        outfile.write('\t\\caption{WRITE ME}\n')
-        outfile.write('\\end{table*}\n')
 
 
 create_table()
