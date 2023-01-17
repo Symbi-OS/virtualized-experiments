@@ -55,7 +55,7 @@ def load_data():
                 for row in data:
                     if row[0] not in ops:
                         ops[row[0]] = []
-                    ops[row[0]].append(float(row[1]) / 1000.0)
+                    ops[row[0]].append(float(row[1]))
 
                 for op in ops:
                     all_ops = np.array(ops[op])
@@ -111,7 +111,7 @@ def plot_figure():
                         label=op,
                         align='center',
                         zorder=4,
-                        yerr=ops[op]['stddev'] / 1000,
+                        yerr=ops[op]['stddev']
                         error_kw=dict(lw=1, capsize=0, capthick=1),
                         width=width,
                         color=colors[op],
