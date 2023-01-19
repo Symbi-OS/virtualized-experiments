@@ -47,7 +47,7 @@ for mits in "mitigations=off mds=off" "" ; do
 		taskset -c ${CPU1} qemu-guest \
 			-k ${IMAGES}/lupine-qemu.kernel \
 			-d ${IMAGES}/redis.ext2.disposible \
-			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nosmap nosmep ${mits} nokaslr selinux=0 transparent_hugepage=never root=/dev/vda rw console=ttyS0 init=/guest_start.sh /trusted/redis-server" \
+			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} nokaslr selinux=0 transparent_hugepage=never root=/dev/vda rw console=ttyS0 init=/guest_start.sh /trusted/redis-server" \
                 	-m 1024 -p ${CPU2} \
 			-b ${NETIF} -x
 

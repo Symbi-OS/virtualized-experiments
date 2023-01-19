@@ -24,7 +24,7 @@ function work {
 		taskset -c ${CPU1} qemu-guest \
 			-i ${IMAGES}/sym-redis.cpio.gz \
 			-k ${IMAGES}/vmlinuz.sym-ret \
-			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init -- $SYM_ARGS" \
+			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init -- $SYM_ARGS" \
 			-m 1024 -p ${CPU2} \
 			-b ${NETIF} -x
 

@@ -37,7 +37,7 @@ do
 	taskset -c ${CPU1} qemu-guest \
 		-i ${IMAGES}/redis-ukl-initrd.cpio.gz \
 		-k ${IMAGES}/vmlinuz.ukl-redis-byp \
-		-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nosmap nosmep mds=off ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never mitigations=off" \
+		-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep mds=off ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never mitigations=off" \
 		-m 1024 -p ${CPU2} \
 		-b ${NETIF} -x
 
