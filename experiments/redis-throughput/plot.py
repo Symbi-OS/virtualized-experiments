@@ -71,7 +71,7 @@ def load_data():
                         stats['tput_max'] = ops[op]['amax']
                 stats[entry] = ops
 
-    stats['tput_max'] += 0.5
+    stats['tput_max'] += 20000
     return stats
 
 def plot_figure():
@@ -88,12 +88,12 @@ def plot_figure():
     group = 0.8
     base = stats['linux-5.14-qemu-all']
 
-    ax.set_ylabel("Avg. Throughput (Normed to Linux 5.14)")
+    ax.set_ylabel("Avg. Throughput")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
-    ax1_yticks = np.arange(0, 1.75, step=0.5)
+    ax1_yticks = np.arange(0, stats['tput_max'], step=10000)
     ax.set_yticks(ax1_yticks, minor=False)
     ax.set_yticklabels(ax1_yticks)
-    ax.set_ylim(0, 1.75)
+    ax.set_ylim(0, stats['tput_max'])
 
     for kernel in ['linux-4.0-qemu-all', 'lupine-qemu-all', 'linux-4.0-qemu-none',
                    'lupine-qemu-none', 'linux-5.8-qemu-all', 'privbox-qemu-all',
@@ -107,21 +107,21 @@ def plot_figure():
         width = group / len(ops)
         offset = (width / 2) - (group / 2)
         for op in sorted(ops):
-            bar = ax.bar([count + 1 + offset], ops[op]['mean'] / base[op]['mean'],
+            bar = ax.bar([count + 1 + offset], ops[op]['mean'],
                         label=op,
                         align='center',
                         zorder=4,
-                        yerr=ops[op]['stddev']
+                        yerr=ops[op]['stddev'],
                         error_kw=dict(lw=1, capsize=0, capthick=1),
                         width=width,
                         color=colors[op],
                         linewidth=0.5)
-            ax.text(count + 1 + offset, ops[op]['amax'] / base[op]['mean'] + 0.2,
-                   round(ops[op]['mean'] / base[op]['mean'], 2),
+            ax.text(count + 1 + offset, ops[op]['amax'] + 0.2,
+                   round(ops[op]['mean'], 2),
                    ha='center',
                    va='bottom',
                    zorder=6,
-                   fontsize=12,
+                   fontsize=8,
                    linespacing=0,
                    bbox=dict(pad=-.6, facecolor='white', linewidth=0),
                    rotation='vertical')
