@@ -117,11 +117,11 @@ def plot_figure():
                         color=colors[op],
                         linewidth=0.5)
             ax.text(count + 1 + offset, ops[op]['amax'] + 0.2,
-                   round(ops[op]['mean'], 2),
+                   "{} k".format(round(ops[op]['mean'] / 1000, 1)),
                    ha='center',
                    va='bottom',
                    zorder=6,
-                   fontsize=8,
+                   fontsize=7,
                    linespacing=0,
                    bbox=dict(pad=-.6, facecolor='white', linewidth=0),
                    rotation='vertical')
