@@ -3,7 +3,7 @@
 # verbose output
 set -x
 
-SYM_ARGS='-be -s "write->ksys_write" -s "read->ksys_read"'
+SYM_ARGS='-be -s "write->__x64_sys_write" -s "read->__x64_sys_read"'
 
 source ./impl/symbiote-base-redis.sh
 

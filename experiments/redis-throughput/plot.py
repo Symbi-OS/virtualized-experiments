@@ -16,24 +16,24 @@ labels = {
     'unikraft-qemu': 'Unikraft',
     'ukl-qemu': 'UKL SC',
     'ukl-byp-qemu': 'UKL BYP',
-    'symbiote-pt-qemu-all': 'Symbiote PT',
-    'symbiote-int-qemu-all': 'Symbiote INT',
-    'symbiote-el-qemu-all': 'Symbiote EL',
-    'symbiote-sc-rw-qemu-all': 'Symbiote SC RW',
-    'linux-5.14-qemu-all': 'Linux 5.14',
-    'linux-5.8-qemu-all': 'Linux 5.8',
-    'linux-4.0-qemu-all': 'Linux 4.0',
-    'privbox-qemu-all': 'PrivBox',
-    'lupine-qemu-all': 'Lupine',
-    'symbiote-pt-qemu-none': 'Symbiote PT No Mitigations',
-    'symbiote-int-qemu-none': 'Symbiote INT No Mitigations',
-    'symbiote-el-qemu-none': 'Symbiote EL No Mitigations',
-    'symbiote-sc-rw-qemu-none': 'Symbiote SC RW No Mitigations',
-    'linux-5.14-qemu-none': 'Linux 5.14 No Mitigations',
-    'linux-5.8-qemu-none': 'Linux 5.8 No Mitigations',
-    'linux-4.0-qemu-none': 'Linux 4.0 No Mitigations',
-    'privbox-qemu-none': 'PrivBox No Mitigations',
-    'lupine-qemu-none': 'Lupine No Mitigations'
+    'symbiote-pt-qemu-none': 'Symbiote PT',
+    'symbiote-int-qemu-none': 'Symbiote INT',
+    'symbiote-el-qemu-none': 'Symbiote EL',
+    'symbiote-sc-rw-qemu-none': 'Symbiote SC RW',
+    'linux-5.14-qemu-none': 'Linux 5.14',
+    'linux-5.8-qemu-none': 'Linux 5.8',
+    'linux-4.0-qemu-none': 'Linux 4.0',
+    'privbox-qemu-none': 'PrivBox',
+    'lupine-qemu-none': 'Lupine',
+    'symbiote-pt-qemu-all': 'Symbiote PT with mitigations',
+    'symbiote-int-qemu-all': 'Symbiote INT with mitigations',
+    'symbiote-el-qemu-all': 'Symbiote EL with mitigations',
+    'symbiote-sc-rw-qemu-all': 'Symbiote SC RW with mitigations',
+    'linux-5.14-qemu-all': 'Linux 5.14 with mitigations',
+    'linux-5.8-qemu-all': 'Linux 5.8 with mitigations',
+    'linux-4.0-qemu-all': 'Linux 4.0 with mitigations',
+    'privbox-qemu-all': 'PrivBox with mitigations',
+    'lupine-qemu-all': 'Lupine with mitigations'
 }
 
 def load_data():
@@ -86,7 +86,7 @@ def plot_figure():
 
     count = 0
     group = 0.8
-    base = stats['linux-5.14-qemu-all']
+    base = stats['linux-5.14-qemu-none']
 
     ax.set_ylabel("Avg. Throughput")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
@@ -95,13 +95,9 @@ def plot_figure():
     ax.set_yticklabels(ax1_yticks)
     ax.set_ylim(0, stats['tput_max'])
 
-    for kernel in ['linux-4.0-qemu-all', 'lupine-qemu-all', 'linux-4.0-qemu-none',
-                   'lupine-qemu-none', 'linux-5.8-qemu-all', 'privbox-qemu-all',
-                   'linux-5.8-qemu-none', 'privbox-qemu-none', 'linux-5.14-qemu-all',
-                   'linux-5.14-qemu-none', 'symbiote-pt-qemu-all', 'symbiote-int-qemu-all',
-                   'symbiote-el-qemu-all', 'symbiote-sc-rw-qemu-all', 'symbiote-pt-qemu-none',
-                   'symbiote-int-qemu-none', 'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none',
-                   'unikraft-qemu']:
+    for kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
+                   'linux-5.14-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
+                   'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none', 'unikraft-qemu']:
         xlabels.append(labels[kernel])
         ops = stats[kernel]
         width = group / len(ops)
@@ -116,12 +112,17 @@ def plot_figure():
                         width=width,
                         color=colors[op],
                         linewidth=0.5)
+            pct_change = 100.0 * (ops[op]['mean'] - base[op]['mean']) / base[op]['mean']
+            color = 'black'
+            if pct_change < 0:
+                color = 'red'
             ax.text(count + 1 + offset, ops[op]['amax'] + 0.2,
-                   "{} k".format(round(ops[op]['mean'] / 1000, 1)),
+                   '{}%'.format(round(pct_change, 2)),
                    ha='center',
                    va='bottom',
                    zorder=6,
                    fontsize=7,
+                   color=color,
                    linespacing=0,
                    bbox=dict(pad=-.6, facecolor='white', linewidth=0),
                    rotation='vertical')
