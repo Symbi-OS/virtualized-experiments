@@ -14,6 +14,21 @@ rm -rf $IMAGES
 mkdir -p $IMAGES
 
 # ========================================================================
+# Generate Symbiote kernel and initrd's
+# ========================================================================
+
+SYMDIR=${BUILDDIR}/.symbios
+mkdir -p $SYMDIR
+pushd $SYMDIR
+git clone https://github.com/Symbi-OS/artifacts.git
+cd artifacts
+make virt-ramdisk
+cp initrd/base-redis.cpio.gz ${IMAGES}/
+cp initrd/sym-redis.cpio.gz ${IMAGES}/
+cp all_releases/Linux/bzImage_symbiote_ret ${IMAGES}/vmlinuz.sym-ret
+popd
+
+# ========================================================================
 # Generate Unikraft VM images
 # ========================================================================
 
@@ -86,21 +101,6 @@ mount -o loop ${IMAGES}/redis.ext2 /mnt/redis-tmp
 cp ./data/redis.conf /mnt/redis-tmp
 umount /mnt/redis-tmp
 rm -rf /mnt/redis-tmp
-
-# ========================================================================
-# Generate Symbiote kernel and initrd's
-# ========================================================================
-
-SYMDIR=${BUILDDIR}/.symbios
-mkdir -p $SYMDIR
-pushd $SYMDIR
-git clone https://github.com/Symbi-OS/artifacts.git
-cd artifacts
-make virt-ramdisk
-cp initrd/base-redis.cpio.gz ${IMAGES}/
-cp initrd/sym-redis.cpio.gz ${IMAGES}/
-cp all_releases/Linux/bzImage_symbiote_ret ${IMAGES}/vmlinuz.sym-ret
-popd
 
 # ========================================================================
 # Generate Baseline kernels
