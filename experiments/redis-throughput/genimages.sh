@@ -25,6 +25,7 @@ cd artifacts
 make virt-ramdisk
 cp initrd/base-redis.cpio.gz ${IMAGES}/
 cp initrd/sym-redis.cpio.gz ${IMAGES}/
+cp initrd/deep-sc-redis.cpio.gz ${IMAGES}/
 cp all_releases/Linux/bzImage_symbiote_ret ${IMAGES}/vmlinuz.sym-ret
 popd
 
