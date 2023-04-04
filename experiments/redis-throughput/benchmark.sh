@@ -14,4 +14,5 @@ mkdir rawdata results
 ./impl/symbiote-int-redis.sh
 ./impl/symbiote-el-redis.sh
 ./impl/symbiote-sc-rw-redis.sh
+./impl/symbiote-deep-rw-redis.sh
 ./impl/unikraft-qemu-redis.sh
