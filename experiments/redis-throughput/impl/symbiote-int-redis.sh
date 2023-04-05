@@ -11,6 +11,7 @@ kill_qemu
 
 create_bridge $NETIF $BASEIP
 LOG_T='rawdata/symbiote-int-qemu-redis-$mit-$j.txt'
+INITRD='${IMAGES}/sym-redis.cpio.gz'
 
 for mits in "mitigations=off mds=off" "" ; do
         if [ -z $mits ]; then

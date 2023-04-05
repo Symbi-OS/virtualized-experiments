@@ -19,10 +19,11 @@ function cleanup {
 trap "cleanup" EXIT
 
 function work {
+	RAMDISK=`echo $(eval echo \"$INITRD\")`
 	for ((j = 1 ; j < 21 ; j++)); do
 		LOG=`echo $(eval echo \"$LOG_T\")`
 		taskset -c ${CPU1} qemu-guest \
-			-i ${IMAGES}/sym-redis.cpio.gz \
+			-i ${RAMDISK} \
 			-k ${IMAGES}/vmlinuz.sym-ret \
 			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init -- $SYM_ARGS" \
 			-m 1024 -p ${CPU2} \
