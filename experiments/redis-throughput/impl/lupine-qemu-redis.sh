@@ -10,6 +10,7 @@ IMAGES=$(pwd)/images
 source ../common/set-cpus.sh
 source ../common/network.sh
 source ../common/redis.sh
+source ../common/qemu.sh
 
 IMAGES=$(pwd)/images/
 NETIF=unikraft0
@@ -48,7 +49,7 @@ for mits in "mitigations=off mds=off" "" ; do
 			-k ${IMAGES}/lupine-qemu.kernel \
 			-d ${IMAGES}/redis.ext2.disposible \
 			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} nokaslr selinux=0 transparent_hugepage=never root=/dev/vda rw console=ttyS0 init=/guest_start.sh /trusted/redis-server" \
-                	-m 1024 -p ${CPU2} \
+                	-m ${MEM} -p ${CPU2} \
 			-b ${NETIF} -x
 
 		# make sure that the server has properly started

@@ -45,7 +45,7 @@ for mits in "mitigations=off mds=off" "" ; do
 			-q ${IMAGES}/disk0.qcow2 \
 			-e ${IMAGES}/privbox/devenv \
 			-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr root=/dev/vda selinux=0 transparent_hugepage=never" \
-			-m 1024 -p ${CPU2} \
+			-m ${MEM} -p ${CPU2} \
 			-b ${NETIF} -x
 
 		# make sure that the server has properly started

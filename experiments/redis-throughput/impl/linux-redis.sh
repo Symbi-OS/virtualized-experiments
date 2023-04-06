@@ -46,7 +46,7 @@ for mits in "mitigations=off mds=off" "" ; do
 				-i ${IMAGES}/base-redis.cpio.gz \
 				-k ${IMAGES}/vmlinuz.${ver}-baseline \
 				-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never root=/dev/ram0 init=/init" \
-				-m 1024 -p ${CPU2} \
+				-m ${MEM} -p ${CPU2} \
 				-b ${NETIF} -x
 
 			# make sure that the server has properly started

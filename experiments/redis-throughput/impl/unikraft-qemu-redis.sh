@@ -35,7 +35,7 @@ do
 	taskset -c ${CPU1} qemu-guest \
 		-i data/redis.cpio \
 		-k ${IMAGES}/unikraft+mimalloc.kernel \
-		-a "netdev.ipv4_addr=${BASEIP}.2 netdev.ipv4_gw_addr=${BASEIP}.1 netdev.ipv4_subnet_mask=255.255.255.0 -- /redis.conf" -m 1024 -p ${CPU2} \
+		-a "netdev.ipv4_addr=${BASEIP}.2 netdev.ipv4_gw_addr=${BASEIP}.1 netdev.ipv4_subnet_mask=255.255.255.0 -- /redis.conf" -m ${MEM} -p ${CPU2} \
 		-b ${NETIF} -x
 
 	# make sure that the server has properly started
