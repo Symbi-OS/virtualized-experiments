@@ -6,7 +6,7 @@
 #[[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=2
 [[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=3
 [[ -z "${KEEPALIVE}" ]] && KEEPALIVE=1
-[[ -z "${PIPELINING}" ]] && PIPELINING=16
+[[ -z "${PIPELINING}" ]] && PIPELINING=1
 [[ -z "${QUERIES}" ]] && QUERIES=get,set
 
 function benchmark_redis_server {
