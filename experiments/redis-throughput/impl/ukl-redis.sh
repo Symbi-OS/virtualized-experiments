@@ -41,7 +41,7 @@ do
 
 		for ((j = 1 ; j < $RUNS ; j++))
 		do
-			LOG=rawdata/ukl-${UKL_CONFIG}-redis-$j.txt
+			LOG=rawdata/ukl-${UKL_CONFIG}-redis-${mit}-$j.txt
 			touch $LOG
 			taskset -c ${CPU1} qemu-guest \
 				-i ${IMAGES}/ukl-initrd.cpio.xz \
