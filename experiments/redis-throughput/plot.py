@@ -101,7 +101,7 @@ def plot_figure():
     for kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
                    'linux-5.14-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
                    'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none', 'symbiote-deep-rw-qemu-none',
-                   'ukl-sc-qemu-none', 'ukl-byp-qemu-none', 'unikraft-qemu']:
+                   'ukl-byp-qemu-none', 'ukl-sc-qemu-none', 'unikraft-qemu']:
         xlabels.append(labels[kernel])
         ops = stats[kernel]
         width = group / len(ops)
@@ -189,6 +189,13 @@ def create_table():
             outfile.write('${:.4f} \\pm {:.4f}$ & '.format(stats[mit]['GET']['mean'], stats[mit]['GET']['stddev']))
             outfile.write('${:.4f} \\pm {:.4f}$ \\\\\n '.format(stats[mit]['SET']['mean'], stats[mit]['SET']['stddev']))
             outfile.write('\t\t\\hline\n')
+
+        outfile.write('\t\tunikraft-qemu &')
+        outfile.write('${:.4f} \\pm {:.4f}$ & '.format(stats['unikraft-qemu']['GET']['mean'], stats['unikraft-qemu']['GET']['stddev']))
+        outfile.write('${:.4f} \\pm {:.4f}$ & '.format(stats['unikraft-qemu']['SET']['mean'], stats['unikraft-qemu']['SET']['stddev']))
+        outfile.write('-- & -- \\\\\n')
+        outfile.write('\t\t\\hline\n')
+
 
         outfile.write('\t\\end{tabular}\n')
 
