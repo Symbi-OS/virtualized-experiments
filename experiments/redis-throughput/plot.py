@@ -121,7 +121,7 @@ def plot_figure():
                 base = stats['linux-4.0-qemu-none']
             elif kernel in ['linux-5.8-qemu-none', 'privbox-qemu-none']:
                 base = stats['linux-5.8-qemu-none']
-            else
+            else:
                 base = stats['linux-5.14-qemu-none']
 
             pct_change = 100.0 * (ops[op]['mean'] - base[op]['mean']) / base[op]['mean']
