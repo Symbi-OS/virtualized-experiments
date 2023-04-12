@@ -35,7 +35,7 @@ for mits in "mitigations=off mds=off" "" ; do
 	RESULTS=results/privbox-qemu-${mit}.csv
 	echo "operation	throughput" > $RESULTS
 
-	for ((j = 1 ; j < 21 ; j++)); do
+	for ((j = 1 ; j < $RUNS ; j++)); do
 		LOG=rawdata/privbox-qemu-redis-${mit}-${j}.txt
 		touch $LOG
 		qemu-img create -F qcow2 -f qcow2 -b ${IMAGES}/privbox-disk.qcow2 ${IMAGES}/disk0.qcow2

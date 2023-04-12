@@ -20,7 +20,7 @@ trap "cleanup" EXIT
 
 function work {
 	RAMDISK=`echo $(eval echo \"$INITRD\")`
-	for ((j = 1 ; j < 21 ; j++)); do
+	for ((j = 1 ; j < $RUNS ; j++)); do
 		LOG=`echo $(eval echo \"$LOG_T\")`
 		taskset -c ${CPU1} qemu-guest \
 			-i ${RAMDISK} \

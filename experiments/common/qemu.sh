@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -z "${MEM}" ]] && MEM=1024
+[[ -z "${MEM}" ]] && MEM=4096
 
 function kill_qemu {
 	killall -9 qemu-system-x86

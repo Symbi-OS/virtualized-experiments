@@ -28,7 +28,7 @@ trap "cleanup" EXIT
 RESULTS=results/unikraft-qemu.csv
 echo "operation	throughput" > $RESULTS
 
-for ((j = 1 ; j < 21 ; j++))
+for ((j = 1 ; j < $RUNS ; j++))
 do
 	LOG=rawdata/unikraft-qemu-redis-$j.txt
 	touch $LOG

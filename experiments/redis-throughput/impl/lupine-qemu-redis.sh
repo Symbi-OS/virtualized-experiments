@@ -40,7 +40,7 @@ for mits in "mitigations=off mds=off" "" ; do
 	RESULTS=results/lupine-qemu-${mit}.csv
 	echo "operation	throughput" > $RESULTS
 
-	for ((j = 1 ; j < 21 ; j++))
+	for ((j = 1 ; j < $RUNS ; j++))
 	do
 		LOG=rawdata/lupine-qemu-redis-${mit}-${j}.txt
 		cp ${IMAGES}/redis.ext2 ${IMAGES}/redis.ext2.disposible

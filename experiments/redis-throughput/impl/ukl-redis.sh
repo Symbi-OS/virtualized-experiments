@@ -39,7 +39,7 @@ do
 		RESULTS=results/ukl-${UKL_CONFIG}-qemu-${mit}.csv
 		echo "operation	throughput" > $RESULTS
 
-		for j in {1..20}
+		for ((j = 1 ; j < $RUNS ; j++))
 		do
 			LOG=rawdata/ukl-${UKL_CONFIG}-redis-$j.txt
 			touch $LOG

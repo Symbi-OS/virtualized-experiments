@@ -6,8 +6,9 @@
 #[[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=2
 [[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=3
 [[ -z "${KEEPALIVE}" ]] && KEEPALIVE=1
-[[ -z "${PIPELINING}" ]] && PIPELINING=1
+[[ -z "${PIPELINING}" ]] && PIPELINING=16
 [[ -z "${QUERIES}" ]] && QUERIES=get,set
+[[ -z "${RUNS}" ]] && RUNS=5
 
 function benchmark_redis_server {
 	timeout -k 65 60 taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \

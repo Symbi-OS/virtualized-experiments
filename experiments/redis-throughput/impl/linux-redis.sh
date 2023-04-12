@@ -39,7 +39,7 @@ for mits in "mitigations=off mds=off" "" ; do
 		echo "operation	throughput" > $RESULTS
 		touch $LOG
 
-		for ((j = 1 ; j < 21 ; j++))
+		for ((j = 1 ; j < $RUNS ; j++))
 		do
 			LOG=rawdata/linux-${ver}-qemu-redis-${mit}-${j}.txt
 			taskset -c ${CPU1} qemu-guest \
