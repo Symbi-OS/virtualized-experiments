@@ -46,7 +46,7 @@ do
 			taskset -c ${CPU1} qemu-guest \
 				-i ${IMAGES}/ukl-initrd.cpio.xz \
 				-k ${IMAGES}/vmlinuz.ukl-${UKL_CONFIG} \
-				-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never mitigations=off" \
+				-a "console=ttyS0 net.ifnames=0 biosdevname=0 nowatchdog nopti nosmap nosmep ${mits} ip=${BASEIP}.2:::255.255.255.0::eth0:none nokaslr selinux=0 transparent_hugepage=never" \
 				-m ${MEM} -p ${CPU2} \
 				-b ${NETIF} -x
 
