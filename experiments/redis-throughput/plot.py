@@ -90,7 +90,6 @@ def plot_figure():
 
     count = 0
     group = 0.8
-    base = stats['linux-5.14-qemu-none']
 
     ax.set_ylabel("Avg. Throughput")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
@@ -117,6 +116,14 @@ def plot_figure():
                         width=width,
                         color=colors[op],
                         linewidth=0.5)
+
+            if kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none']:
+                base = stats['linux-4.0-qemu-none']
+            elif kernel in ['linux-5.8-qemu-none', 'privbox-qemu-none']:
+                base = stats['linux-5.8-qemu-none']
+            else
+                base = stats['linux-5.14-qemu-none']
+
             pct_change = 100.0 * (ops[op]['mean'] - base[op]['mean']) / base[op]['mean']
             color = 'black'
             if pct_change < 0:
