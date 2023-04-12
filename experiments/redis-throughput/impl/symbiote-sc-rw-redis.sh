@@ -14,7 +14,7 @@ LOG_T='rawdata/symbiote-sc-rw-qemu-redis-$mit-$j.txt'
 INITRD='${IMAGES}/sym-redis.cpio.gz'
 
 for mits in "mitigations=off mds=off" "" ; do
-        if [ -z $mits ]; then
+        if [ -z "$mits" ]; then
                 mit="all"
         else
                 mit="none"

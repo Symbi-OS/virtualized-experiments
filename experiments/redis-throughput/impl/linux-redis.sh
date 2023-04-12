@@ -28,7 +28,7 @@ function cleanup {
 trap "cleanup" EXIT
 
 for mits in "mitigations=off mds=off" "" ; do
-        if [ -z $mits ]; then
+        if [ -z "$mits" ]; then
                 mit="all"
         else
                 mit="none"
