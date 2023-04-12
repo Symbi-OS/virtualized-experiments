@@ -14,8 +14,8 @@ import csv
 
 labels = {
     'unikraft-qemu': 'Unikraft',
-    'ukl-qemu': 'UKL SC',
-    'ukl-byp-qemu': 'UKL BYP',
+    'ukl-sc-qemu-none': 'UKL SC',
+    'ukl-byp-qemu-none': 'UKL BYP',
     'symbiote-pt-qemu-none': 'Symbiote PT',
     'symbiote-int-qemu-none': 'Symbiote INT',
     'symbiote-el-qemu-none': 'Symbiote EL',
@@ -26,6 +26,8 @@ labels = {
     'linux-4.0-qemu-none': 'Linux 4.0',
     'privbox-qemu-none': 'PrivBox',
     'lupine-qemu-none': 'Lupine',
+    'ukl-sc-qemu-all': 'UKL SC with mitigations',
+    'ukl-byp-qemu-all': 'UKL BYP with mitigations',
     'symbiote-pt-qemu-all': 'Symbiote PT with mitigations',
     'symbiote-int-qemu-all': 'Symbiote INT with mitigations',
     'symbiote-el-qemu-all': 'Symbiote EL with mitigations',
@@ -100,7 +102,7 @@ def plot_figure():
     for kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
                    'linux-5.14-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
                    'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none', 'symbiote-deep-rw-qemu-none',
-                   'unikraft-qemu']:
+                   'ukl-sc-qemu-none', 'ukl-byp-qemu-none', 'unikraft-qemu']:
         xlabels.append(labels[kernel])
         ops = stats[kernel]
         width = group / len(ops)
@@ -170,7 +172,8 @@ def create_table():
 
         for base in ['linux-4.0-qemu-', 'lupine-qemu-', 'linux-5.8-qemu-', 'privbox-qemu-',
                      'linux-5.14-qemu-', 'symbiote-pt-qemu-', 'symbiote-int-qemu-',
-                     'symbiote-el-qemu-', 'symbiote-sc-rw-qemu-', 'symbiote-deep-rw-qemu-']:
+                     'symbiote-el-qemu-', 'symbiote-sc-rw-qemu-', 'symbiote-deep-rw-qemu-',
+                     'ukl-byp-qemu-', 'ukl-sc-qemu-']:
             mit = '{}all'.format(base)
             no_mit = '{}none'.format(base)
             outfile.write('\t\t{} & '.format(labels[mit]))
