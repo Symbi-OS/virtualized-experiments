@@ -18,7 +18,17 @@ git checkout ukl-main-5.14
 git reset --hard HEAD
 popd
 
+make clean
+
 # build the standard redis
+git reset --hard HEAD
+./configure --with-program=redis
+make -j`nproc` vmlinuz
+mv vmlinuz /kernels/vmlinuz.ukl-base
+make clean
+
+
+# build the bypass redis
 git reset --hard HEAD
 autoreconf -i
 ./configure --with-program=redis --enable-bypass --enable-use-ret

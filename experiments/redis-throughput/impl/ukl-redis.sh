@@ -27,7 +27,7 @@ function cleanup {
 
 trap "cleanup" EXIT
 
-for UKL_CONFIG in "byp" "sc"
+for UKL_CONFIG in "base" "byp" "sc"
 do
 	for mits in "mitigations=off mds=off" "" ; do
 	        if [ -z "$mits" ]; then
