@@ -94,7 +94,7 @@ def plot_figure():
 
     ax.set_ylabel("Avg. Throughput")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
-    ax1_yticks = np.arange(0, stats['tput_max'], step=10000)
+    ax1_yticks = np.arange(0, stats['tput_max'], step=int(round(stats['tput_max'] / 10, -4)))
     ax.set_yticks(ax1_yticks, minor=False)
     ax.set_yticklabels(ax1_yticks)
     ax.set_ylim(0, stats['tput_max'])
