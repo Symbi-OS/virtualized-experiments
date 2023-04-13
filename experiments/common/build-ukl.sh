@@ -5,7 +5,7 @@ set -x
 dnf -y update
 dnf -y install automake autoconf sed make supermin gcc flex bison \
 	elfutils-libelf-devel bc hostname perl openssl-devel git dropbear \
-	msr-tools wget dnf-plugins-core bzip2 curl xz
+	msr-tools wget dnf-plugins-core bzip2 curl xz diffutils
 
 pushd /src/ukl
 

@@ -26,12 +26,12 @@ build_ukl() {
 		popd
 	fi
 
-	docker pull fedora:36
+	docker pull fedora:35
 	CONTAINER=ukl-builder
 	docker stop $CONTAINER
 	docker rm -f $CONTAINER
 	ABSUKL=`readlink -f ${UKLDIR}`
-	docker run --rm --privileged --name=${CONTAINER} -v ${ABSUKL}:/src -v ${IMAGES}:/kernels -dit fedora:36 /bin/bash
+	docker run --rm --privileged --name=${CONTAINER} -v ${ABSUKL}:/src -v ${IMAGES}:/kernels -dit fedora:35 /bin/bash
 	docker cp ../common/build-ukl.sh ${CONTAINER}:/
 	docker exec -it $CONTAINER /build-ukl.sh
 
