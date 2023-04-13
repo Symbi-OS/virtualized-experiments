@@ -192,7 +192,7 @@ def create_table():
             outfile.write('${:.4f} \\pm {:.4f}$ \\\\\n '.format(stats[mit]['SET']['mean'], stats[mit]['SET']['stddev']))
             outfile.write('\t\t\\hline\n')
 
-        outfile.write('\t\tunikraft-qemu &')
+        outfile.write('\t\t{} &'.format(labels['unikraft-qemu']))
         outfile.write('${:.4f} \\pm {:.4f}$ & '.format(stats['unikraft-qemu']['GET']['mean'], stats['unikraft-qemu']['GET']['stddev']))
         outfile.write('${:.4f} \\pm {:.4f}$ & '.format(stats['unikraft-qemu']['SET']['mean'], stats['unikraft-qemu']['SET']['stddev']))
         outfile.write('-- & -- \\\\\n')
