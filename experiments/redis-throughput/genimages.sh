@@ -113,6 +113,21 @@ rm -rf /mnt/redis-tmp
 # Generate Baseline kernels
 # ========================================================================
 
+build_5()
+{
+	CONTAINER=builder5
+	docker stop $CONTAINER
+	docker rm -f $CONTAINER
+	docker run --rm --privileged --name=$CONTAINER -v ${IMAGES}:/kernels -dit ${2} /bin/bash
+	docker cp ../common/setup-build.sh ${CONTAINER}:/
+	docker cp ../common/build-kernel-5.x.sh ${CONTAINER}:/
+	docker exec -it $CONTAINER /setup-build.sh dnf openssl-devel
+	docker exec -it $CONTAINER /build-kernel-5.x.sh $1
+	docker stop $CONTAINER
+	docker rm -f $CONTAINER
+	sleep 10
+}
+
 CONTAINER=builder4
 docker stop $CONTAINER
 docker rm -f $CONTAINER
@@ -127,16 +142,5 @@ docker exec -it $CONTAINER /build-kernel-4.0.sh
 docker stop $CONTAINER
 docker rm -f $CONTAINER
 
-for ver in 5.8 5.14 ; do
-	CONTAINER=builder${ver}
-	docker stop $CONTAINER
-	docker rm -f $CONTAINER
-	docker run --rm --privileged --name=$CONTAINER -v ${IMAGES}:/kernels -dit fedora:30 /bin/bash
-	docker cp ../common/setup-build.sh ${CONTAINER}:/
-	docker cp ../common/build-kernel-5.x.sh ${CONTAINER}:/
-	docker exec -it $CONTAINER /setup-build.sh dnf openssl-devel
-	docker exec -it $CONTAINER /build-kernel-5.x.sh $ver
-	docker stop $CONTAINER
-	docker rm -f $CONTAINER
-done
-
+build_5 "5.8" "fedora:30"
+build_5 "5.14" "fedora:36"
