@@ -7,6 +7,7 @@ rm -rf rawdata results
 mkdir rawdata results
 
 # run benchmarks
+./impl/symbiote-baseline.sh
 ./impl/symbiote-pt-redis.sh
 ./impl/symbiote-int-redis.sh
 ./impl/symbiote-el-redis.sh

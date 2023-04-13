@@ -17,6 +17,7 @@ labels = {
     'ukl-sc-qemu-none': 'UKL SC',
     'ukl-byp-qemu-none': 'UKL BYP',
     'ukl-base-qemu-none': 'UKL BASE',
+    'symbiote-baseline-qemu-none': 'Symbiote Baseline',
     'symbiote-pt-qemu-none': 'Symbiote PT',
     'symbiote-int-qemu-none': 'Symbiote INT',
     'symbiote-el-qemu-none': 'Symbiote EL',
@@ -30,6 +31,7 @@ labels = {
     'ukl-sc-qemu-all': 'UKL SC with mitigations',
     'ukl-byp-qemu-all': 'UKL BYP with mitigations',
     'ukl-base-qemu-all': 'UKL BASE with mitigations',
+    'symbiote-baseline-qemu-all': 'Symbiote Baseline with mitigations',
     'symbiote-pt-qemu-all': 'Symbiote PT with mitigations',
     'symbiote-int-qemu-all': 'Symbiote INT with mitigations',
     'symbiote-el-qemu-all': 'Symbiote EL with mitigations',
@@ -80,7 +82,7 @@ def load_data():
     stats['tput_max'] += 20000
     return stats
 
-def plot_figure():
+def plot_figure(kernels, name):
     plt.rcParams['font.family'] = 'serif'
     plt.rcParams['font.serif'] = ['Times New Roman'] + plt.rcParams['font.serif']
 
@@ -101,10 +103,7 @@ def plot_figure():
     ax.set_yticklabels(ax1_yticks)
     ax.set_ylim(0, ymax)
 
-    for kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
-                   'linux-5.14-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
-                   'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none', 'symbiote-deep-rw-qemu-none',
-                   'ukl-base-qemu-none', 'ukl-byp-qemu-none', 'ukl-sc-qemu-none', 'unikraft-qemu']:
+    for kernel in kernels:
         xlabels.append(labels[kernel])
         ops = stats[kernel]
         width = group / len(ops)
@@ -166,7 +165,7 @@ def plot_figure():
     # Save to file
     fig.tight_layout()
     plt.show()
-    fig.savefig('redis-virt.pdf')
+    fig.savefig(name)
 
 
 def create_table():
@@ -181,7 +180,7 @@ def create_table():
         outfile.write('\t\t\\hline\n')
 
         for base in ['linux-4.0-qemu-', 'lupine-qemu-', 'linux-5.8-qemu-', 'privbox-qemu-',
-                     'linux-5.14-qemu-', 'symbiote-pt-qemu-', 'symbiote-int-qemu-',
+                     'linux-5.14-qemu-', 'symbiote-baseline-qemu-', 'symbiote-pt-qemu-', 'symbiote-int-qemu-',
                      'symbiote-el-qemu-', 'symbiote-sc-rw-qemu-', 'symbiote-deep-rw-qemu-',
                      'ukl-base-qemu-', 'ukl-byp-qemu-', 'ukl-sc-qemu-']:
             mit = '{}all'.format(base)
@@ -204,4 +203,11 @@ def create_table():
 
 
 create_table()
-plot_figure()
+no_mits = ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
+           'linux-5.14-qemu-none', 'symbiote-baseline-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
+           'symbiote-el-qemu-none', 'symbiote-sc-rw-qemu-none', 'symbiote-deep-rw-qemu-none',
+           'ukl-base-qemu-none', 'ukl-byp-qemu-none', 'ukl-sc-qemu-none', 'unikraft-qemu']
+plot_figure(no_mits, 'redis-virt.pdf')
+mits = ['linux-4.0-qemu-none', 'linux-4.0-qemu-all', 'linux-5.8-qemu-none', 'linux-5.8-qemu-all',
+        'linux-5.14-qemu-none', 'linux-5.14-qemu-all']
+plot_figure(mits, 'redis-all-mits-virt.pdf')
