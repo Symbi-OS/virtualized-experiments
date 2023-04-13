@@ -95,10 +95,11 @@ def plot_figure():
 
     ax.set_ylabel("Avg. Throughput")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
-    ax1_yticks = np.arange(0, stats['tput_max'], step=int(round(stats['tput_max'] / 10, -4)))
+    ymax = stats['tput_max'] + (stats['tput_max'] * 0.2)
+    ax1_yticks = np.arange(0, ymax, step=int(round(ymax / 10, -4)))
     ax.set_yticks(ax1_yticks, minor=False)
     ax.set_yticklabels(ax1_yticks)
-    ax.set_ylim(0, stats['tput_max'])
+    ax.set_ylim(0, ymax)
 
     for kernel in ['linux-4.0-qemu-none', 'lupine-qemu-none', 'linux-5.8-qemu-none', 'privbox-qemu-none',
                    'linux-5.14-qemu-none', 'symbiote-pt-qemu-none', 'symbiote-int-qemu-none',
