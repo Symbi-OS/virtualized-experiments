@@ -27,14 +27,14 @@ function cleanup {
 
 trap "cleanup" EXIT
 
-for mits in "mitigations=off mds=off" "" ; do
-        if [ -z "$mits" ]; then
-                mit="all"
-        else
-                mit="none"
-        fi
+for ver in 4.0 5.8 5.14 ; do 
+	for mits in "mitigations=off mds=off" "" ; do
+        	if [ -z "$mits" ]; then
+                	mit="all"
+        	else
+                	mit="none"
+        	fi
 
-	for ver in 4.0 5.8 5.14 ; do 
 		RESULTS=results/linux-${ver}-qemu-${mit}.csv
 		echo "operation	throughput" > $RESULTS
 		touch $LOG

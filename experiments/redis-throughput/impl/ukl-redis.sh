@@ -51,7 +51,7 @@ do
 				-b ${NETIF} -x
 
 			# make sure that the server has properly started
-			sleep 20
+			sleep 15
 
 			# benchmark
 			benchmark_redis_server ${BASEIP}.2 6379

@@ -1,17 +1,16 @@
 #!/bin/bash
 
-[[ -z "${REPS}" ]] && REPS=500000
-#[[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=10
+[[ -z "${REPS}" ]] && REPS=2000000
 [[ -z "${CONCURRENT_CONNS}" ]] && CONCURRENT_CONNS=50
-#[[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=2
 [[ -z "${PAYLOAD_SIZE}" ]] && PAYLOAD_SIZE=3
 [[ -z "${KEEPALIVE}" ]] && KEEPALIVE=1
 [[ -z "${PIPELINING}" ]] && PIPELINING=16
-[[ -z "${QUERIES}" ]] && QUERIES=get,set
-[[ -z "${RUNS}" ]] && RUNS=5
+[[ -z "${QUERIES}" ]] && QUERIES=set,get
+[[ -z "${RUNS}" ]] && RUNS=101
 
 function benchmark_redis_server {
-	timeout -k 65 60 taskset -c ${CPU3},${CPU4} redis-benchmark --csv -q \
+	timeout -k 65 60 taskset -c ${CPU3},${CPU4},${CPU5} redis-benchmark --csv -q \
+			--threads 3 \
 			-n ${REPS} -c ${CONCURRENT_CONNS} \
 			-h ${1} -p $2 -d ${PAYLOAD_SIZE} \
 			-k ${KEEPALIVE} -t ${QUERIES} \

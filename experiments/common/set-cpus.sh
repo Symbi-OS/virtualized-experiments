@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CPU1=4
-CPU2=5
-CPU3=32
-CPU4=33
+CPU1=1
+CPU2=2
+CPU3=3
+CPU4=4
+CPU5=5

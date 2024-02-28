@@ -17,12 +17,12 @@ labels = {
     'ukl-sc-qemu-none': 'UKL SC',
     'ukl-byp-qemu-none': 'UKL BYP',
     'ukl-base-qemu-none': 'UKL BASE',
-    'symbiote-baseline-qemu-none': 'Symbiote Baseline',
-    'symbiote-pt-qemu-none': 'Symbiote PT',
-    'symbiote-int-qemu-none': 'Symbiote INT',
-    'symbiote-el-qemu-none': 'Symbiote EL',
-    'symbiote-sc-rw-qemu-none': 'Symbiote SC RW',
-    'symbiote-deep-rw-qemu-none': 'Symbiote Deep SC RW',
+    'symbiote-baseline-qemu-none': 'kElevate Baseline',
+    'symbiote-pt-qemu-none': 'kElevate PT',
+    'symbiote-int-qemu-none': 'kElevate INT',
+    'symbiote-el-qemu-none': 'kElevate EL',
+    'symbiote-sc-rw-qemu-none': 'kElevate BYP',
+    'symbiote-deep-rw-qemu-none': 'kElevate SC',
     'linux-5.14-qemu-none': 'Linux 5.14',
     'linux-5.8-qemu-none': 'Linux 5.8',
     'linux-4.0-qemu-none': 'Linux 4.0',
@@ -31,12 +31,12 @@ labels = {
     'ukl-sc-qemu-all': 'UKL SC with mitigations',
     'ukl-byp-qemu-all': 'UKL BYP with mitigations',
     'ukl-base-qemu-all': 'UKL BASE with mitigations',
-    'symbiote-baseline-qemu-all': 'Symbiote Baseline with mitigations',
-    'symbiote-pt-qemu-all': 'Symbiote PT with mitigations',
-    'symbiote-int-qemu-all': 'Symbiote INT with mitigations',
-    'symbiote-el-qemu-all': 'Symbiote EL with mitigations',
-    'symbiote-sc-rw-qemu-all': 'Symbiote SC RW with mitigations',
-    'symbiote-deep-rw-qemu-all': 'Symbiote Deep SC RW with mitigations',
+    'symbiote-baseline-qemu-all': 'kElevate Baseline with mitigations',
+    'symbiote-pt-qemu-all': 'kElevate PT with mitigations',
+    'symbiote-int-qemu-all': 'kElevate INT with mitigations',
+    'symbiote-el-qemu-all': 'kElevate EL with mitigations',
+    'symbiote-sc-rw-qemu-all': 'kElevate SC RW with mitigations',
+    'symbiote-deep-rw-qemu-all': 'kElevate Deep SC RW with mitigations',
     'linux-5.14-qemu-all': 'Linux 5.14 with mitigations',
     'linux-5.8-qemu-all': 'Linux 5.8 with mitigations',
     'linux-4.0-qemu-all': 'Linux 4.0 with mitigations',
@@ -95,13 +95,13 @@ def plot_figure(kernels, name):
     count = 0
     group = 0.8
 
-    ax.set_ylabel("Avg. Throughput")
+    ax.set_ylabel("Avg. Throughput (100k reqs/sec)")
     ax.grid(which='major', axis='y', linestyle=':', alpha=0.5, zorder=0)
-    ymax = stats['tput_max'] + (stats['tput_max'] * 0.2)
-    ax1_yticks = np.arange(0, ymax, step=int(round(ymax / 10, -4)))
+    ymax = (stats['tput_max'] + (stats['tput_max'] * 0.2)) / 100000
+    ax1_yticks = np.arange(0, 16.0, step=2.0)
     ax.set_yticks(ax1_yticks, minor=False)
     ax.set_yticklabels(ax1_yticks)
-    ax.set_ylim(0, ymax)
+    ax.set_ylim(0, 16.0)
 
     for kernel in kernels:
         xlabels.append(labels[kernel])
@@ -109,11 +109,11 @@ def plot_figure(kernels, name):
         width = group / len(ops)
         offset = (width / 2) - (group / 2)
         for op in sorted(ops):
-            bar = ax.bar([count + 1 + offset], ops[op]['mean'],
+            bar = ax.bar([count + 1 + offset], ops[op]['mean'] / 100000,
                         label=op,
                         align='center',
                         zorder=4,
-                        yerr=ops[op]['stddev'],
+                        yerr=ops[op]['stddev'] / 100000,
                         error_kw=dict(lw=1, capsize=0, capthick=1),
                         width=width,
                         color=colors[op],
@@ -130,7 +130,10 @@ def plot_figure(kernels, name):
             color = 'black'
             if pct_change < 0:
                 color = 'red'
-            ax.text(count + 1 + offset, ops[op]['amax'] + 0.2,
+            if kernel in ['symbiote-baseline-qemu-none', 'symbiote-deep-rw-qemu-none', 'ukl-sc-qemu-none',
+                         'unikraft-qemu']:
+                ax.text(count + 1 + offset,
+                   (ops[op]['mean'] + ops[op]['stddev']) / 100000 + 0.25,
                    '{}%'.format(round(pct_change, 2)),
                    ha='center',
                    va='bottom',
@@ -147,6 +150,7 @@ def plot_figure(kernels, name):
     xticks = range(1, len(xlabels) + 1)
     ax.set_xticks(xticks)
     ax.set_xticklabels(xlabels, fontsize=10, rotation=40, ha='right', rotation_mode='anchor')
+    ax.set_xlabel('System')
     ax.set_xlim(.5, len(xlabels) + .5)
     ax.yaxis.grid(True, zorder=0, linestyle=':')
     ax.tick_params(axis='both', which='both', length=0)
